@@ -1,0 +1,25 @@
+name: Automated API Tests
+
+on:
+  push:
+  schedule:
+    # 定时任务，在每天的5点推送天气信息到邮箱
+    - cron: '0/30 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Apifox CLI
+      run: npm install -g apifox-cli
+
+    - name: Running Test Scenario
+      run: apifox run https://api.apifox.com/api/v1/projects/3769791/api-test/ci-config/395645/detail?token=xJuSR7Z67S1QEC2JyBNwwS -r html,cli
